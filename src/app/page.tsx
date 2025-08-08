@@ -1,95 +1,62 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
+import React from 'react';
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [url, setUrl] = React.useState<string>('');
+  const [fee, setFee] = React.useState<number>(0);
+  const [message, setMessage] = React.useState<string>('');
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  function handleUrlChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setUrl(event.target.value);
+  }
+
+  function handleFeeChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setFee(Number(event.target.value));
+  }
+
+  function handleConnectClick() {
+    // Aqui você pode adicionar a lógica para conectar à MetaMask
+    setMessage('Conectando à MetaMask...');
+  }
+
+  return (
+    <>
+    <div className="container px-4 py-5">
+      <div className="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div className="col-6">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png" 
+            className="d-block mx-lg-auto img-fluig" width="700" height="500" 
+            alt="Bitcoin Logo"
+            />       
+          </div>
+          <div className="col-6">
+            <h1 className="display-5 fw-bold lh-1 mb-3">Insert Coin</h1>
+            <p className="lead">Monetize Seus Links.</p>
+            <hr/>
+            <p>Insira um link e ganhe Bitcoin</p>
+            <div className="form-floating mb-3">
+              <input type="text" className="form-control" id="url" value={url || ''} onChange={handleUrlChange}/>
+              <label htmlFor="url">Link:</label>
+            </div>
+            <div className="row mb-3">
+              <div className="col-6">
+                <div className="form-floating">
+                  <input type="text" className="form-control" id="fee" value={fee || 0} onChange={handleFeeChange}/>
+                  <label htmlFor="fee">Taxa por clique (wei):</label>
+                </div>
+              </div>
+              <div className="col-6">
+                <button type="button" className="btn btn-primary w-100 h-100" onClick={handleConnectClick}>
+                  <img src="/metamask.svg" alt="MetaMask Logo" width="32" className="me-1" />
+                  Conectar e Criar Link</button>
+              </div>
+            </div>
+            { message && (<div className="alert alert-success p-3 col-12 mt-3" role="alert">{message}</div>)}
+          </div>
+      </div>
+
     </div>
+    </>
   );
 }
