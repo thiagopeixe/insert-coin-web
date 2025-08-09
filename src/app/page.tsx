@@ -1,6 +1,9 @@
 "use client";
 
 import React from 'react';
+import hash from 'object-hash';
+import { createLink } from '../services/Web3Service';
+
 export default function Home() {
   const [url, setUrl] = React.useState<string>('');
   const [fee, setFee] = React.useState<number>(0);
@@ -15,9 +18,17 @@ export default function Home() {
   }
 
   function handleConnectClick() {
-    // Aqui você pode adicionar a lógica para conectar à MetaMask
-    setMessage('Conectando à MetaMask...');
-  }
+    const linkId = hash(url).slice(0, 6);
+    setMessage(`Criando link...`);
+    createLink(url, linkId, fee).then(() => {
+      setUrl('');
+      setFee(0);
+      setMessage(`Link criado com sucesso! Acesse http://insert.coin/${linkId}`);
+    }).catch((error) => {
+      console.error('Error creating link:', error);
+      setMessage('Erro ao criar link. Verifique se o MetaMask está conectado e se a rede está correta.');
+    });
+   }
 
   return (
     <>
